@@ -116,39 +116,31 @@ def create_master_df(data):
     print("Processing files to generate ML dataset...")
 
     for item in data:
-        # Skip if file failed to load
         if item['signal_data'] is None:
             continue
 
         file_id = item['id']
-        failure_rep_threshold = item['label']  # The ground truth from your CSV
+        failure_rep_threshold = item['label']
 
-        # 1. Process Signal
         processed = process_emg(item['time'], item['signal_data'], fs=item['fs'])
 
-        # 2. Extract Reps (You may need to tune distance/prominence for your specific data)
-        peaks, rep_windows = extract_reps(item['time'], processed, distance_seconds=2.0, prominence=0.2)
+        peaks, rep_windows = extract_reps(processed, distance_seconds=2.0, prominence=0.2)
 
         # 3. Compute Features
-        # Note: Ensure your compute_rep_features function returns a DataFrame
         df_features = compute_rep_features(rep_windows, processed, item['time'])
 
         # --- Labeling Logic ---
-        # If the current rep number is >= the label, marks as Fatigued (1)
-        # df_features['rep'] is 1-based index
         df_features['is_fatigued'] = df_features['rep'].apply(lambda x: 1 if x >= failure_rep_threshold else 0)
 
-        # Add metadata for tracking
         df_features['file_id'] = file_id
 
         all_reps_data.append(df_features)
 
-    # Concatenate all files into one Master DataFrame
     master_df = pd.concat(all_reps_data, ignore_index=True)
 
-    # Drop any Rows with NaN/Infinite values just in case
     master_df = master_df.replace([np.inf, -np.inf], np.nan).dropna()
 
     print(f"Dataset created with {len(master_df)} total repetitions.")
     print(master_df['is_fatigued'].value_counts())
-    master_df.head()
+    master_df.to_csv('./data/master_df.csv', index=False)
+    return master_df

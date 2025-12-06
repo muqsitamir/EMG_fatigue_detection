@@ -18,7 +18,7 @@ def signal_analysis_pipeline(data):
 
             # 2. Extract repetitions
             # Adjust distance_seconds and prominence as needed for your specific data
-            peaks_c3d, rep_windows_c3d = extract_reps(time, processed_emg_c3d, distance_seconds=2.1, prominence=0.35)
+            peaks_c3d, rep_windows_c3d = extract_reps(processed_emg_c3d, distance_seconds=2.1, prominence=0.35)
 
             # 3. Compute features per repetition
             features_c3d = compute_rep_features(rep_windows_c3d, processed_emg_c3d, time)

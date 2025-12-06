@@ -52,16 +52,41 @@ def process_emg(time, emg, fs=None, lowcut=20, highcut=450, notch_freq=50.0):
     rect, env = rectify_and_envelope(emg_notch, fs, lp_cut=5.0)
     return {'fs': fs, 'raw': emg, 'bp': emg_bp, 'notch': emg_notch, 'rect': rect, 'env': env}
 
-def extract_reps(time, processed, distance_seconds=0.5, prominence=0.25):
-    fs = processed['fs']
-    env = processed['env']
-    peaks, props = segment_reps_by_envelope(env, fs, distance_seconds=distance_seconds, prominence=prominence)
+def extract_reps(processed, distance_seconds=0.5, prominence=0.25,
+                 min_len_seconds=0.3, max_len_seconds=10.0):
+    fs = processed["fs"]
+    env = processed["env"]
+
+    peaks, props = segment_reps_by_envelope(
+        env, fs, distance_seconds=distance_seconds, prominence=prominence
+    )
+    peaks = np.asarray(peaks, dtype=int)
+
     rep_windows = []
-    for p in peaks:
-        win_half = int(0.6 * fs)
-        start = max(0, p - win_half)
-        end = min(len(env), p + win_half)
+
+    if len(peaks) < 3:
+        return peaks, rep_windows
+
+    min_len = int(min_len_seconds * fs) if min_len_seconds is not None else None
+    max_len = int(max_len_seconds * fs) if max_len_seconds is not None else None
+
+    for i in range(1, len(peaks) - 1):
+        p_prev, p, p_next = peaks[i - 1], peaks[i], peaks[i + 1]
+
+        start = (p_prev + p) // 2
+        end   = (p + p_next) // 2
+
+        start = max(0, start)
+        end = min(len(env), end)
+
+        L = end - start
+        if min_len is not None and L < min_len:
+            continue
+        if max_len is not None and L > max_len:
+            continue
+
         rep_windows.append((start, end, p))
+
     return peaks, rep_windows
 
 def compute_rep_features(rep_windows, processed, time):
@@ -120,3 +145,19 @@ def plot_rep_trends(time, processed, features, optimal_rep=None, ground_truth_fa
     plt.tight_layout()
     plt.suptitle(title)
     plt.show()
+
+def add_baseline_features(g):
+    g = g.sort_values("rep").copy()
+    base = g.head(3)[["rms", "mdf", "env_peak", "rep_duration"]].mean()
+
+    for col in ["rms", "mdf", "env_peak", "rep_duration"]:
+        g[f"{col}_rel_base"] = g[col] / (base[col] + 1e-9)
+        g[f"{col}_delta_base"] = g[col] - base[col]
+
+    # simple dynamics (no future leakage)
+    for col in ["rms", "mdf", "env_peak"]:
+        g[f"{col}_diff1"] = g[col].diff().fillna(0)
+        g[f"{col}_roll3_mean"] = g[col].rolling(3, min_periods=1).mean()
+
+    g["peak_time_diff1"] = g["peak_time"].diff().fillna(0)
+    return g
