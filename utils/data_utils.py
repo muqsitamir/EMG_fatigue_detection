@@ -4,7 +4,7 @@ import numpy as np
 import os
 import pandas as pd
 
-from utils.emg_processing_utils import compute_rep_features, extract_reps, process_emg
+from utils.emg_processing_utils import compute_rep_features, extract_reps, process_emg, add_baseline_features
 
 
 def load_and_extract_emg_from_c3d(file_path: str, channel_label: str):
@@ -41,7 +41,6 @@ def load_and_extract_emg_from_c3d(file_path: str, channel_label: str):
         print(f"Loaded C3D file: {file_path}")
         print(f"Extracted signal for channel: '{channel_label}'")
         print(f"data shape: {signal_to_plot.shape}")
-        print(f"Sampling rate: {sampling_rate} Hz")
 
         return signal_to_plot, sampling_rate, channel_label
 
@@ -119,7 +118,6 @@ def create_master_df(data):
         if item['signal_data'] is None:
             continue
 
-        file_id = item['id']
         failure_rep_threshold = item['label']
 
         processed = process_emg(item['time'], item['signal_data'], fs=item['fs'])
@@ -128,11 +126,14 @@ def create_master_df(data):
 
         # 3. Compute Features
         df_features = compute_rep_features(rep_windows, processed, item['time'])
+        df_features["rep_duration"] = df_features["end"] - df_features["start"]
 
         # --- Labeling Logic ---
         df_features['is_fatigued'] = df_features['rep'].apply(lambda x: 1 if x >= failure_rep_threshold else 0)
 
-        df_features['file_id'] = file_id
+        df_features['file_id'] = item["id"]
+
+        df_features = df_features.groupby("file_id", group_keys=False).apply(add_baseline_features)
 
         all_reps_data.append(df_features)
 

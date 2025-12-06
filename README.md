@@ -94,3 +94,38 @@ The project successfully identifies trends where RMS increases and MDF decreases
    pip install -r requirements.txt
    python main.py
    
+
+
+## Performance Summary
+
+**• `files_total = 32`**  
+Total number of evaluated sessions (`file_id`s).
+
+**• `files_with_onset_and_trigger = 24`**  
+Sessions where a labeled fatigue onset exists *and* your trigger fired at least once.
+
+**• `never_triggered = 5`**  
+Sessions in which the trigger never fired (probability never stayed above threshold for `M` consecutive reps).  
+These are **file-level false negatives** — complete misses of the fatigue onset.
+
+**• `mean_delta_reps ≈ 0.96`, `median_delta_reps = 1`**  
+On average, when the trigger fires, it does so about **1 rep late** relative to the labeled onset.
+
+**• `mae_reps = 1.375`**  
+The mean absolute error: typical timing error is **about 1–2 reps**.
+
+**• `pct_within_0_reps ≈ 0.21`**  
+The trigger fires **exactly at the onset rep** in ~21% of cases.
+
+**• `pct_within_1_rep ≈ 0.625`**  
+About **62.5%** of triggers occur within **±1 rep** of the true onset.
+
+**• `pct_within_2_reps = 0.875`**  
+About **87.5%** of triggers occur within **±2 reps** of onset.
+
+**• `early_rate = 0.125`, `late_rate ≈ 0.667`**  
+
+When the trigger fires:  
+- It’s early only **12.5%** of the time.  
+- It’s late roughly **67%** of the time.  
+This indicates a consistent tendency toward late detection beneficial in avoiding false alarms is critical, but suboptimal if early warning is the priority.

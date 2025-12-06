@@ -52,38 +52,65 @@ def process_emg(time, emg, fs=None, lowcut=20, highcut=450, notch_freq=50.0):
     rect, env = rectify_and_envelope(emg_notch, fs, lp_cut=5.0)
     return {'fs': fs, 'raw': emg, 'bp': emg_bp, 'notch': emg_notch, 'rect': rect, 'env': env}
 
+def extract_reps_fixed_window(processed, distance_seconds=0.5, prominence=0.25):
+    fs = processed['fs']
+    env = processed['env']
+    peaks, props = segment_reps_by_envelope(env, fs, distance_seconds=distance_seconds, prominence=prominence)
+    rep_windows = []
+    for p in peaks:
+        win_half = int(0.6 * fs)
+        start = max(0, p - win_half)
+        end = min(len(env), p + win_half)
+        rep_windows.append((start, end, p))
+    return peaks, rep_windows
+
 def extract_reps(processed, distance_seconds=0.5, prominence=0.25,
-                 min_len_seconds=0.3, max_len_seconds=10.0):
+                 min_len_seconds=None, max_len_seconds=None):
     fs = processed["fs"]
     env = processed["env"]
 
-    peaks, props = segment_reps_by_envelope(
-        env, fs, distance_seconds=distance_seconds, prominence=prominence
-    )
+    peaks, props = segment_reps_by_envelope(env, fs,
+                                           distance_seconds=distance_seconds,
+                                           prominence=prominence)
     peaks = np.asarray(peaks, dtype=int)
+    n = len(env)
 
     rep_windows = []
-
-    if len(peaks) < 3:
+    if len(peaks) == 0:
         return peaks, rep_windows
+
+    # Build boundaries: [0, mid(p0,p1), mid(p1,p2), ..., n]
+    boundaries = np.zeros(len(peaks) + 1, dtype=int)
+    boundaries[0] = 0
+    boundaries[-1] = n
+    if len(peaks) > 1:
+        boundaries[1:-1] = (peaks[:-1] + peaks[1:]) // 2
 
     min_len = int(min_len_seconds * fs) if min_len_seconds is not None else None
     max_len = int(max_len_seconds * fs) if max_len_seconds is not None else None
 
-    for i in range(1, len(peaks) - 1):
-        p_prev, p, p_next = peaks[i - 1], peaks[i], peaks[i + 1]
+    for i, p in enumerate(peaks):
+        start = int(boundaries[i])
+        end = int(boundaries[i + 1])
 
-        start = (p_prev + p) // 2
-        end   = (p + p_next) // 2
-
-        start = max(0, start)
-        end = min(len(env), end)
+        # safety: enforce valid window containing the peak
+        start = max(0, min(start, p))
+        end = min(n, max(end, p + 1))
 
         L = end - start
         if min_len is not None and L < min_len:
-            continue
+            # don't silently drop end reps if labels depend on them:
+            # fallback to a small fixed window around peak
+            win_half = int(0.6 * fs)
+            start = max(0, p - win_half)
+            end   = min(n, p + win_half)
+            L = end - start
+
         if max_len is not None and L > max_len:
-            continue
+            # clamp to max_len centered on peak (keeps it instead of dropping)
+            half = max_len // 2
+            start = max(0, p - half)
+            end = min(n, p + half)
 
         rep_windows.append((start, end, p))
 

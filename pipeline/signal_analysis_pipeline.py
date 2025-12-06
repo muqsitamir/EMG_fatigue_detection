@@ -23,7 +23,7 @@ def signal_analysis_pipeline(data):
             # 3. Compute features per repetition
             features_c3d = compute_rep_features(rep_windows_c3d, processed_emg_c3d, time)
 
-            print(f'Detected {len(features_c3d)} reps from C3D data.')
+            print(f'Detected {len(features_c3d)} reps from {d["id"]}.')
             # display(features_c3d)
 
             # 4. Detect optimal repetition
