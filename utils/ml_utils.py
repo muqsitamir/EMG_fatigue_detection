@@ -90,5 +90,14 @@ def trigger_from_proba(g, proba_col="proba", thr=0.58, M=2):
     for i, a in enumerate(above):
         run = run + 1 if a else 0
         if run >= M:
-            return int(i)  # first index where you have M consecutive
+            return int(i)
+    return None
+
+
+def trigger_from_proba_m_of_n(g, proba_col="proba", thr=0.58, M=2, N=3):
+    above = (g[proba_col].to_numpy() >= thr).astype(int)
+    for i in range(len(above)):
+        win = above[max(0, i - N + 1): i + 1]  # last N (or fewer at start)
+        if win.sum() >= M:
+            return int(i)  # trigger at i (end of the window)
     return None

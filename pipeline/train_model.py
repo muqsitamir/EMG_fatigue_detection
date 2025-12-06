@@ -1,5 +1,6 @@
 import pandas as pd
 
+from utils.data_utils import save_model_bundle
 from utils.eval_utils import evaluate_predictions
 from utils.ml_utils import TrainConfig, make_xy_groups, build_model, train_oof_predict_proba, select_threshold_max_bacc
 from typing import Dict
@@ -30,3 +31,29 @@ def run_training_eval(
         plot_proba_hist(y, oof_proba)
 
     return results, best_t
+
+
+def train_final_model(
+    df: pd.DataFrame,
+    best_threshold: float,m,n
+    ):
+    y = df["is_fatigued"].astype(int).to_numpy()
+    X = df.drop(columns=["is_fatigued", "file_id"]).select_dtypes(include=["number"])
+    feature_cols = list(X.columns)
+
+    final_model = build_model()
+    final_model.fit(X, y)
+
+    best_threshold = best_threshold
+    trigger_m, trigger_n = m, n
+    smooth_alpha = None
+
+    save_model_bundle(
+        model=final_model,
+        feature_cols=feature_cols,
+        best_threshold=best_threshold,
+        trigger_M=trigger_m,
+        trigger_N=trigger_n,
+        smooth_alpha=smooth_alpha,
+        bundle_path="./models/fatigue_model_bundle.joblib"
+    )

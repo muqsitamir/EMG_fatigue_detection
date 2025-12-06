@@ -1,10 +1,12 @@
 import pandas as pd
-from pipeline.signal_analysis_pipeline import signal_analysis_pipeline
-from pipeline.train_model import run_training_eval
-from utils.data_utils import load_with_csv, create_master_df
+
+from pipeline.inference import inference_for_single_test_file
+from pipeline.train_model import run_training_eval, train_final_model
 from utils.eval_utils import evaluate_onset_timing
 from utils.ml_utils import TrainConfig
 from utils.print_utils import print_results, print_timing_summary
+from pipeline.signal_analysis_pipeline import signal_analysis_pipeline
+from utils.data_utils import load_with_csv, create_master_df
 
 
 def main():
@@ -21,11 +23,19 @@ def main():
 
     print_results(results)
 
-    timing_df, timing_summary = evaluate_onset_timing(df, results["oof_proba"], thr=best_t, M=2)
+    m, n = 2, 3
+
+    timing_df, timing_summary = evaluate_onset_timing(df, results["oof_proba"], thr=best_t, M=m, N=n, m_of_n=True)
 
     print_timing_summary(timing_summary)
     print(timing_df)
 
+    train_final_model(df, best_t, m, n)
+
+    df_pred, trigger_rep = inference_for_single_test_file()
+
+    print(f"Fatigue detected at {trigger_rep}")
+    print(df_pred.pred)
 
 if __name__ == "__main__":
     main()

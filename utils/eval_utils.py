@@ -5,10 +5,10 @@ import pandas as pd
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score, confusion_matrix, classification_report, \
     average_precision_score
 
-from utils.ml_utils import onset_from_labels, trigger_from_proba
+from utils.ml_utils import onset_from_labels, trigger_from_proba, trigger_from_proba_m_of_n
 
 
-def evaluate_onset_timing(df, proba, thr=0.58, M=2,
+def evaluate_onset_timing(df, proba, thr=0.58, M=2, N=3, m_of_n=False,
                           group_col="file_id", order_col="rep",
                           label_col="is_fatigued"):
     d = df.copy()
@@ -29,9 +29,11 @@ def evaluate_onset_timing(df, proba, thr=0.58, M=2,
         g = g.reset_index(drop=True)
 
         onset_idx = onset_from_labels(g, label_col)
-        trig_idx  = trigger_from_proba(g, "proba", thr=thr, M=M)
+        if m_of_n:
+            trig_idx = trigger_from_proba_m_of_n(g, "proba", thr=thr, M=M, N=N)
+        else:
+            trig_idx  = trigger_from_proba(g, "proba", thr=thr, M=M)
 
-        # optional: convert idx->rep number if you prefer actual rep labels
         onset_rep = int(g.loc[onset_idx, order_col]) if (onset_idx is not None and order_col in g.columns) else onset_idx
         trig_rep  = int(g.loc[trig_idx,  order_col]) if (trig_idx  is not None and order_col in g.columns) else trig_idx
 

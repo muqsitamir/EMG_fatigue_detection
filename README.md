@@ -101,31 +101,31 @@ The project successfully identifies trends where RMS increases and MDF decreases
 **• `files_total = 32`**  
 Total number of evaluated sessions (`file_id`s).
 
-**• `files_with_onset_and_trigger = 24`**  
-Sessions where a labeled fatigue onset exists *and* your trigger fired at least once.
+**• `files_with_onset_and_trigger = 26`**  
+Sessions where a labeled fatigue onset exists *and* the trigger fired at least once.
 
-**• `never_triggered = 5`**  
-Sessions in which the trigger never fired (probability never stayed above threshold for `M` consecutive reps).  
-These are **file-level false negatives** — complete misses of the fatigue onset.
+**• `never_triggered = 2`**  
+Sessions where the trigger never fired — these represent **file-level false negatives**.
 
-**• `mean_delta_reps ≈ 0.96`, `median_delta_reps = 1`**  
-On average, when the trigger fires, it does so about **1 rep late** relative to the labeled onset.
+**• `mean_delta_reps = 0.308`, `median_delta_reps = 0.0`**  
+On average, the trigger fires about **0.3 reps late**, while the median indicates it fires **exactly on time** in half of the sessions.
 
-**• `mae_reps = 1.375`**  
-The mean absolute error: typical timing error is **about 1–2 reps**.
+**• `mae_reps = 1.231`**  
+Mean absolute timing error: the trigger is typically within **about 1 rep** of the true onset.
 
-**• `pct_within_0_reps ≈ 0.21`**  
-The trigger fires **exactly at the onset rep** in ~21% of cases.
+**• `pct_within_0_reps = 0.269`**  
+The trigger fires **exactly on the onset rep** in ~26.9% of cases.
 
-**• `pct_within_1_rep ≈ 0.625`**  
-About **62.5%** of triggers occur within **±1 rep** of the true onset.
+**• `pct_within_1_rep = 0.692`**  
+About **69.2%** of triggers occur within **±1 rep** of the true fatigue onset.
 
-**• `pct_within_2_reps = 0.875`**  
-About **87.5%** of triggers occur within **±2 reps** of onset.
+**• `pct_within_2_reps = 0.885`**  
+Roughly **88.5%** of triggers occur within **±2 reps** of onset.
 
-**• `early_rate = 0.125`, `late_rate ≈ 0.667`**  
+**• `early_rate = 0.308`, `late_rate = 0.423`**  
 
-When the trigger fires:  
-- It’s early only **12.5%** of the time.  
-- It’s late roughly **67%** of the time.  
-This indicates a consistent tendency toward late detection beneficial in avoiding false alarms is critical, but suboptimal if early warning is the priority.
+##### Among sessions where the trigger fires:  
+- Early in **30.8%** of cases  
+- Late in **42.3%** of cases
+
+This reflects a system slightly biased toward late detection, which reduces false alarms but may delay early-warning functionality.

@@ -11,9 +11,6 @@ def print_results(results: Dict):
 
 def print_timing_summary(metrics: Dict):
     print(f"""
-    Fatigue Trigger Evaluation Summary
-    ----------------------------------
-    
     • files_total = {metrics['files_total']}
       Total number of evaluated sessions (file_ids).
     
