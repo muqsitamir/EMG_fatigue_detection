@@ -46,7 +46,7 @@ def process_emg(time, emg, fs=None, lowcut=20, highcut=450, notch_freq=50.0):
     if fs is None:
         dt = np.median(np.diff(time))
         fs = 1.0 / dt
-    print(f'Estimated sampling rate: {fs:.1f} Hz')
+    # print(f'Estimated sampling rate: {fs:.1f} Hz')
     emg_bp = bandpass_filter(emg, lowcut, highcut, fs)
     emg_notch = notch_filter(emg_bp, fs, notch_freq=notch_freq)
     rect, env = rectify_and_envelope(emg_notch, fs, lp_cut=5.0)
