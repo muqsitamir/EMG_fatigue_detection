@@ -57,13 +57,13 @@ def plot_emg_signals(folder_path="./Data/Signals", channel_to_extract='Emg_1'):
           if signal_data is not None:
               time = np.arange(len(signal_data)) / fs
 
-              # plt.figure(figsize=(12, 6))
-              # plt.plot(time, signal_data)
-              # plt.title(f'Signal from {signal_label} in {file}')
-              # plt.xlabel('Time (s)')
-              # plt.ylabel('Amplitude')
-              # plt.grid(True)
-              # plt.show()
+              plt.figure(figsize=(12, 6))
+              plt.plot(time, signal_data)
+              plt.title(f'Signal from {signal_label} in {file}')
+              plt.xlabel('Time (s)')
+              plt.ylabel('Amplitude')
+              plt.grid(True)
+              plt.show()
               data.append({"signal_data":signal_data, "fs":fs, "name":str(file), "time":time})
           else:
               print(f"Could not plot signal for channel '{channel_to_extract}'.")
