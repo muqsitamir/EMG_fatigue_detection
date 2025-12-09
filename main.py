@@ -11,15 +11,15 @@ from utils.data_utils import load_with_csv, create_master_df
 
 def main():
     # raw_data = plot_emg_signals()
-    # data = load_with_csv()
+    data = load_with_csv()
     # signal_analysis_pipeline(data)
-    # df = create_master_df(data)
+    df = create_master_df(data)
 
-    df = pd.read_csv("./data/master_df.csv")
+    # df = pd.read_csv("./data/master_df.csv")
 
     cfg = TrainConfig(n_splits=5)
 
-    results, best_t = run_training_eval(df, cfg, plot=False)
+    results, best_t = run_training_eval(df, cfg, plot=True)
 
     print_results(results)
 
