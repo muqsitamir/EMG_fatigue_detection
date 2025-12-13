@@ -1,4 +1,4 @@
-from utils.emg_processing_utils import process_emg, extract_reps, compute_rep_features, detect_optimal_rep, plot_rep_trends
+from emg_fatigue_detection.utils.emg_processing_utils import process_emg, extract_reps, compute_rep_features, detect_optimal_rep, plot_rep_trends
 
 
 def signal_analysis_pipeline(data):

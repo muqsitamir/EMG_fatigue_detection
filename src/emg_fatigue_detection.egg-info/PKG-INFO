@@ -1,3 +1,21 @@
+Metadata-Version: 2.4
+Name: emg_fatigue_detection
+Version: 0.1.0
+Summary: EMG Fatigue Detection Pipeline
+Author-email: Muqsit Amir <muqsit.amir@example.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: matplotlib~=3.10.7
+Requires-Dist: numpy~=2.2.6
+Requires-Dist: pyomeca~=2024.0.2
+Requires-Dist: scipy~=1.15.3
+Requires-Dist: pandas~=2.3.3
+Requires-Dist: seaborn
+Requires-Dist: scikit-learn~=1.7.2
+Requires-Dist: joblib~=1.5.2
+Dynamic: license-file
+
 # Estimating Optimal Training Repetitions Using EMG-Based Muscle Fatigue Detection
 
 ## Team: BioTeam7
@@ -87,17 +105,12 @@ The project successfully identifies trends where RMS increases and MDF decreases
 **Prerequisites:** Ensure you have **Python 3.10** installed.
 
 
-1. **Clone and Install:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/muqsitamir/EMG_fatigue_detection.git
    cd EMG_fatigue_detection
-   pip install .
-   ```
-
-2. **Run the application:**
-   ```bash
-   emg-fatigue-detect
-   ```
+   pip install -r requirements.txt
+   python main.py
    
 
 

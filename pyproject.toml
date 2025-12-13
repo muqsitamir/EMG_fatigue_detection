@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emg_fatigue_detection"
+version = "0.1.0"
+description = "EMG Fatigue Detection Pipeline"
+authors = [
+    {name = "Muqsit Amir", email = "muqsit.amir@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "matplotlib~=3.10.7",
+    "numpy~=2.2.6",
+    "pyomeca~=2024.0.2",
+    "scipy~=1.15.3",
+    "pandas~=2.3.3",
+    "seaborn",
+    "scikit-learn~=1.7.2",
+    "joblib~=1.5.2",
+]
+
+[project.scripts]
+emg-fatigue-detect = "emg_fatigue_detection.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

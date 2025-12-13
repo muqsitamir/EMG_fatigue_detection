@@ -5,7 +5,7 @@ import os
 import pandas as pd
 import joblib
 
-from utils.emg_processing_utils import compute_rep_features, extract_reps, process_emg, add_baseline_features
+from emg_fatigue_detection.utils.emg_processing_utils import compute_rep_features, extract_reps, process_emg, add_baseline_features
 
 
 def load_and_extract_emg_from_c3d(file_path: str, channel_label: str):

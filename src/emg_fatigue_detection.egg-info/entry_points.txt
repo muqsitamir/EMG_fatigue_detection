@@ -1,0 +1,2 @@
+[console_scripts]
+emg-fatigue-detect = emg_fatigue_detection.cli:main
