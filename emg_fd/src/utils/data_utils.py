@@ -73,7 +73,7 @@ def plot_emg_signals(folder_path, channel_to_extract):
 
     return data
 
-def load_with_csv(folder_path="./data/Signals", csv_file_path="./data/filtered_signals.csv", channel_to_extract='Emg_1'):
+def load_with_csv(folder_path, csv_file_path, channel_to_extract):
     extracted_data_list = []
     df_labels = pd.read_csv(csv_file_path, sep=';', index_col=False)
     df_labels = df_labels.dropna(axis=1, how='all')
