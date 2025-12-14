@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "emg-fatigue-detection-toolbox"
-version = "0.1.3"
+version = "0.1.4"
 description = "EMG fatigue detection (training + inference) with a packaged pretrained model."
 readme = "README.md"
 requires-python = ">=3.10"
