@@ -39,9 +39,10 @@ This project focuses on the independent measurement and analysis of surface elec
     * **Ground Truth:** Subjective feedback on perceived soreness/fatigue recorded after each set.
 
 <p align="center">
- <img src="docs/images/experiment.png" alt="Experiment" width="150"/>
-<img src="docs/images/experiment1.jpg" alt="Experiment 1" width="150"/>
+  <img src="https://raw.githubusercontent.com/muqsitamir/EMG_fatigue_detection/main/docs/images/experiment.png" alt="Experiment" width="150"/>
+  <img src="https://raw.githubusercontent.com/muqsitamir/EMG_fatigue_detection/main/docs/images/experiment1.jpg" alt="Experiment 1" width="150"/>
 </p>
+
 
 ### 2. Data Processing Pipeline
 All processing steps are implemented in Python within this repository.
