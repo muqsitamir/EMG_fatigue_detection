@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write   # REQUIRED for trusted publishing (OIDC)
+  id-token: write
 
 jobs:
   build-and-publish:
@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Build
         run: |
