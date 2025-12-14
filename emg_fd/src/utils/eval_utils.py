@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score, confusion_matrix, classification_report, \
     average_precision_score
 
-from src.utils.ml_utils import onset_from_labels, trigger_from_proba, trigger_from_proba_m_of_n
+from emg_fd.src.utils.ml_utils import onset_from_labels, trigger_from_proba, trigger_from_proba_m_of_n
 
 
 def evaluate_onset_timing(df, proba, thr=0.58, M=2, N=3, m_of_n=False,

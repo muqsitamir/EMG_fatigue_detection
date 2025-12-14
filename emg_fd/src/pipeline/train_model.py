@@ -1,11 +1,11 @@
 import pandas as pd
 
-from src.utils.data_utils import save_model_bundle
-from src.utils.eval_utils import evaluate_predictions
-from src.utils.ml_utils import TrainConfig, make_xy_groups, build_model, train_oof_predict_proba, select_threshold_max_bacc
+from emg_fd.src.utils.data_utils import save_model_bundle
+from emg_fd.src.utils.eval_utils import evaluate_predictions
+from emg_fd.src.utils.ml_utils import TrainConfig, make_xy_groups, build_model, train_oof_predict_proba, select_threshold_max_bacc
 from typing import Dict
 
-from src.utils.plot_utils import plot_threshold_sweep, plot_confusion, plot_proba_hist, plot_roc_pr
+from emg_fd.src.utils.plot_utils import plot_threshold_sweep, plot_confusion, plot_proba_hist, plot_roc_pr
 
 
 def run_training_eval(
@@ -14,7 +14,7 @@ def run_training_eval(
     label_col: str = "is_fatigued",
     group_col: str = "file_id",
     plot: bool = True
-) -> Dict:
+):
     X, y, groups = make_xy_groups(df, label_col=label_col, group_col=group_col)
     model = build_model()
 

@@ -175,7 +175,7 @@ The ML pipeline trains on a per-repetition feature table saved to `./data/master
 In Python (e.g., a notebook or a small script):
 
 ```python
-from src.utils.data_utils import load_with_csv, create_master_df
+from emg_fd.src.utils.data_utils import load_with_csv, create_master_df
 
 # 1) Load and extract EMG from C3D files using the label CSV
 sessions = load_with_csv(
@@ -195,9 +195,9 @@ Training is grouped by `file_id` to reduce data leakage across repetitions from 
 ```python
 import pandas as pd
 
-from src.utils.ml_utils import TrainConfig
-from src.pipeline.train_model import run_training_eval, train_final_model
-from src.utils.eval_utils import evaluate_onset_timing
+from emg_fd.src.utils.ml_utils import TrainConfig
+from emg_fd.src.pipeline.train_model import run_training_eval, train_final_model
+from emg_fd.src.utils.eval_utils import evaluate_onset_timing
 
 # Load the generated dataset
 df = pd.read_csv("./data/master_df.csv")
@@ -231,9 +231,9 @@ This will produce `models/fatigue_model_bundle.joblib`, containing:
 ### 5) Run inference on a new session
 
 ```python
-from src.utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
+from emg_fd.src.utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
 
-bundle = load_model_bundle("./models/fatigue_model_bundle.joblib")
+bundle = load_model_bundle("emg_fd/models/fatigue_model_bundle.joblib")
 
 signal, fs, _ = load_and_extract_emg_from_c3d("/path/to/session.c3d", "Emg_1")
 
@@ -490,7 +490,7 @@ The ML pipeline trains on a per-repetition feature table saved to `./data/master
 In Python (e.g., a notebook or a small script):
 
 ```python
-from src.utils.data_utils import load_with_csv, create_master_df
+from emg_fd.src.utils.data_utils import load_with_csv, create_master_df
 
 # 1) Load and extract EMG from C3D files using the label CSV
 sessions = load_with_csv(
@@ -510,9 +510,9 @@ Training is grouped by `file_id` to reduce data leakage across repetitions from 
 ```python
 import pandas as pd
 
-from src.utils.ml_utils import TrainConfig
-from src.pipeline.train_model import run_training_eval, train_final_model
-from src.utils.eval_utils import evaluate_onset_timing
+from emg_fd.src.utils.ml_utils import TrainConfig
+from emg_fd.src.pipeline.train_model import run_training_eval, train_final_model
+from emg_fd.src.utils.eval_utils import evaluate_onset_timing
 
 # Load the generated dataset
 df = pd.read_csv("./data/master_df.csv")
@@ -546,9 +546,9 @@ This will produce `models/fatigue_model_bundle.joblib`, containing:
 ### 5) Run inference on a new session
 
 ```python
-from src.utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
+from emg_fd.src.utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
 
-bundle = load_model_bundle("./models/fatigue_model_bundle.joblib")
+bundle = load_model_bundle("emg_fd/models/fatigue_model_bundle.joblib")
 
 signal, fs, _ = load_and_extract_emg_from_c3d("/path/to/session.c3d", "Emg_1")
 

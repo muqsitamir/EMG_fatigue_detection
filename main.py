@@ -1,11 +1,10 @@
 import pandas as pd
 
-from src.pipeline.inference import inference_for_single_test_file
-from src.pipeline.train_model import run_training_eval, train_final_model
-from src.utils.eval_utils import evaluate_onset_timing
-from src.utils.ml_utils import TrainConfig
-from src.utils.print_utils import print_results, print_timing_summary
-from src.utils.data_utils import load_with_csv, create_master_df
+from emg_fd.src.pipeline.inference import inference_for_single_test_file
+from emg_fd.src.pipeline.train_model import run_training_eval, train_final_model
+from emg_fd.src.utils.eval_utils import evaluate_onset_timing
+from emg_fd.src.utils.ml_utils import TrainConfig
+from emg_fd.src.utils.print_utils import print_results, print_timing_summary
 
 
 def main():
@@ -31,7 +30,7 @@ def main():
 
     train_final_model(df, best_t, m, n)
 
-    df_pred, trigger_rep = inference_for_single_test_file()
+    df_pred, trigger_rep = inference_for_single_test_file("./test_data/test.c3d", "Emg_1", "./models/fatigue_model_bundle.joblib")
 
     print(f"Fatigue detected at {trigger_rep}")
     print(df_pred.pred)
