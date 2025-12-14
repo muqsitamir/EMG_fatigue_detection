@@ -1,0 +1,3 @@
+include README.md
+include LICENSE
+recursive-include emg_fd/models *.joblib

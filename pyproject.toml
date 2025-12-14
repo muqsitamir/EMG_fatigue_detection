@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emg-fatigue-detection"
+version = "0.1.0"
+description = "EMG fatigue detection (training + inference) with a packaged pretrained model."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Muhammad Muqsit Islam", email = "islammuqsit7@gmail.com" }  # <-- change
+]
+keywords = ["EMG", "fatigue", "biomechanics", "machine-learning"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["emg_fd*"]
+
+[tool.setuptools.package-data]
+emg_fd = ["models/*.joblib"]
