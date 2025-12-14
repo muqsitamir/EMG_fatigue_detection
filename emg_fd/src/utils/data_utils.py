@@ -49,7 +49,7 @@ def load_and_extract_emg_from_c3d(file_path: str, channel_label: str):
         print(f"Error loading or processing C3D file {file_path}: {e}")
         return None, None, None
 
-def plot_emg_signals(folder_path="./data/Signals", channel_to_extract='Emg_1'):
+def plot_emg_signals(folder_path, channel_to_extract):
     data = []
     for file in os.listdir(folder_path):
         if file.endswith(".c3d"):
