@@ -173,8 +173,9 @@ The label CSV is read with `sep=';'` and expects at least these columns:
 The ML pipeline trains on a per-repetition feature table saved to `./data/master_df.csv`.
 
 In Python (e.g., a notebook or a small script):
+
 ```python
-from utils.data_utils import load_with_csv, create_master_df
+from src.utils.data_utils import load_with_csv, create_master_df
 
 # 1) Load and extract EMG from C3D files using the label CSV
 sessions = load_with_csv(
@@ -194,9 +195,9 @@ Training is grouped by `file_id` to reduce data leakage across repetitions from 
 ```python
 import pandas as pd
 
-from utils.ml_utils import TrainConfig
-from pipeline.train_model import run_training_eval, train_final_model
-from utils.eval_utils import evaluate_onset_timing
+from src.utils.ml_utils import TrainConfig
+from src.pipeline.train_model import run_training_eval, train_final_model
+from src.utils.eval_utils import evaluate_onset_timing
 
 # Load the generated dataset
 df = pd.read_csv("./data/master_df.csv")
@@ -230,7 +231,7 @@ This will produce `models/fatigue_model_bundle.joblib`, containing:
 ### 5) Run inference on a new session
 
 ```python
-from utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
+from src.utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
 
 bundle = load_model_bundle("./models/fatigue_model_bundle.joblib")
 
@@ -487,8 +488,9 @@ The label CSV is read with `sep=';'` and expects at least these columns:
 The ML pipeline trains on a per-repetition feature table saved to `./data/master_df.csv`.
 
 In Python (e.g., a notebook or a small script):
+
 ```python
-from utils.data_utils import load_with_csv, create_master_df
+from src.utils.data_utils import load_with_csv, create_master_df
 
 # 1) Load and extract EMG from C3D files using the label CSV
 sessions = load_with_csv(
@@ -508,9 +510,9 @@ Training is grouped by `file_id` to reduce data leakage across repetitions from 
 ```python
 import pandas as pd
 
-from utils.ml_utils import TrainConfig
-from pipeline.train_model import run_training_eval, train_final_model
-from utils.eval_utils import evaluate_onset_timing
+from src.utils.ml_utils import TrainConfig
+from src.pipeline.train_model import run_training_eval, train_final_model
+from src.utils.eval_utils import evaluate_onset_timing
 
 # Load the generated dataset
 df = pd.read_csv("./data/master_df.csv")
@@ -544,7 +546,7 @@ This will produce `models/fatigue_model_bundle.joblib`, containing:
 ### 5) Run inference on a new session
 
 ```python
-from utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
+from src.utils.data_utils import load_model_bundle, load_and_extract_emg_from_c3d, predict_fatigue_on_emg
 
 bundle = load_model_bundle("./models/fatigue_model_bundle.joblib")
 

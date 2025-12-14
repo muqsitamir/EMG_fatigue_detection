@@ -5,7 +5,7 @@ import os
 import pandas as pd
 import joblib
 
-from utils.emg_processing_utils import compute_rep_features, extract_reps, process_emg, add_baseline_features
+from src.utils.emg_processing_utils import compute_rep_features, extract_reps, process_emg, add_baseline_features
 
 
 def load_and_extract_emg_from_c3d(file_path: str, channel_label: str):
@@ -263,7 +263,11 @@ def predict_fatigue_on_emg(
         df_feat["rep_duration"] = df_feat["end"] - df_feat["start"]
 
     # Add baseline-normalized features (uses first reps inside this new file)
-    df_feat = df_feat.groupby("file_id", group_keys=False).apply(add_baseline_features)
+    df_feat = (
+        df_feat
+        .groupby("file_id", group_keys=False)[df_feat.columns]
+        .apply(add_baseline_features)
+    )
 
     # Align features exactly like training
     X_new = _align_features_for_model(df_feat, feature_cols)

@@ -1,4 +1,4 @@
-from utils.data_utils import predict_fatigue_on_emg, load_model_bundle, load_and_extract_emg_from_c3d
+from src.utils.data_utils import predict_fatigue_on_emg, load_model_bundle, load_and_extract_emg_from_c3d
 
 def inference_for_single_test_file():
     bundle = load_model_bundle("./models/fatigue_model_bundle.joblib")
