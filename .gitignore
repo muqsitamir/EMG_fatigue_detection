@@ -1,2 +1,5 @@
 /.venv
 /.idea
+*.egg-info/
+build/
+dist/
